@@ -8,11 +8,12 @@ const token_expire_in = '24h';
 const jwt_Secret = 'your jwt token';
 
 // register
-export async function resister (req, res){
+export async function register(req, res){
 
  try {
      const {name, email, password} = req.body;
-     if(!name || !email || password){
+     console.log(req.body.name)
+     if(!name || !email || !password){
         return res.status(400).json({
             success:false,
             message:"all fields are required!"
