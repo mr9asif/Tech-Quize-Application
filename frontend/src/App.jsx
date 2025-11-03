@@ -1,11 +1,13 @@
+import { Route, Routes } from "react-router-dom";
+import Login from "./components/Login";
+import Home from './pages/Home'; // adjust path as needed
 
 const App = () => {
   return (
-    <div>
-      <h1 className="text-xl font-bold underline">
-    Hello world!
-  </h1>
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+    </Routes>
   );
 };
 

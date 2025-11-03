@@ -2,6 +2,7 @@ import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import { connectDB } from './config/db.js';
+import resultRouter from './routes/resultRoutes.js';
 import userRoute from './routes/userRouter.js';
 
 const app = express();
@@ -21,6 +22,8 @@ app.get('/', (req, res)=>{
 
 // auth route
 app.use('/api/auth', userRoute)
+// result routee
+app.use('/api/results', resultRouter);
 
 
 app.listen(port, ()=>{

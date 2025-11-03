@@ -4,7 +4,7 @@ const performanceenum = ['Excellent', 'Good', 'Average', 'Needs work'];
 
 const resultSchema = new mongoose.Schema({
     user:{
-        type:mongoose.Schema.Types.ObjectId, ref:"User", require:true
+        type:mongoose.Schema.Types.ObjectId, ref:"User", required:false
     },
     title:{
         type:String,
