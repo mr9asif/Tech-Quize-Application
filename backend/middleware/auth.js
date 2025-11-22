@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/userModel';
+import User from '../models/userModel.js';
 
 const jwt_Secret = 'your jwt token';
 
 export default async function authMiddleware(req, res, next){
-      const authHeader = req.headers.authoriation;
+      const authHeader = req.headers.authorization;
       if(!authHeader || !authHeader.startwith('Bearer ')){
         return res.status(401).json({
             success:false,

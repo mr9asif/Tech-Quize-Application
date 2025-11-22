@@ -1,10 +1,10 @@
 import {
-    ArrowLeft,
-    Eye,
-    EyeOff,
-    Lock,
-    LogIn,
-    Mail,
+  ArrowLeft,
+  Eye,
+  EyeOff,
+  Lock,
+  LogIn,
+  Mail,
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -24,6 +24,8 @@ const Login = ({ onLoginSuccess = null }) => {
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
+  const API_BASE = 'http://localhost:4000';
+
   // ✅ Validation
   const validate = () => {
     const e = {};
@@ -40,21 +42,52 @@ const Login = ({ onLoginSuccess = null }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitError("");
-    const validationErrors = validate();
-    setError(validationErrors);
+    const validation = validate();
+    setError(validation);
 
-    if (Object.keys(validationErrors).length > 0) return;
+    if (Object.keys(validation).length > 0) return;
 
     setLoading(true);
     try {
-      // Example "fake" login delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+     
+      const payload = {email:email.trim().toLowerCase(), password};
+     const res = await fetch(`${API_BASE}/api/auth/login`, {
+  method: 'POST',
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(payload),
+});
 
-      // Simulate successful login
-      localStorage.setItem("authToken", "fakeToken123");
+        let data = null;
+        try{
+          data = await res.json();
+        } catch{
+//  error
+        }
+        if(!res.ok){
+          const msg = data?.message || "Login failed";
+          setSubmitError(msg);
+          return;
+        }
+       if(data?.token){
+        try {
+          localStorage.setItem('authToken', data.token);
+          localStorage.setItem(
+            'currentUser', JSON.stringify(data.user || {email: payload.email})
+          )
+        } catch (error) {
+          // ignore error
+        }
+       }
+        const user = data.user || {email:payload.email}
+        window.dispatchEvent(
+          new CustomEvent("authChanged", {detail:{user}})
+        )
+        if(typeof onLoginSuccess === 'function') onLoginSuccess(user);
+        navigate("/", {replace:true});
 
-      if (onLoginSuccess) onLoginSuccess();
-      navigate("/"); // Go to home after login
+   // Go to home after login
     } catch (err) {
       console.error(err);
       setSubmitError("Login failed. Please try again.");
@@ -191,6 +224,14 @@ const Login = ({ onLoginSuccess = null }) => {
                       </>
                     )}
                   </button>
+                  <div className={loginStyles.signupContainer}>
+                    <div className={loginStyles.signupContent}>
+                       <span className={loginStyles.signupText}>
+                        Don't have an account?
+                       </span>
+                       <Link to='/signup' className={loginStyles.signupLink}>Create Account</Link>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

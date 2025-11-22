@@ -8,90 +8,126 @@ const token_expire_in = '24h';
 const jwt_Secret = 'your jwt token';
 
 // register
-export async function register(req, res){
+export async function register(req, res) {
+  try {
+    const { name, email, password } = req.body;
+    console.log(req.body.name);
 
- try {
-     const {name, email, password} = req.body;
-     console.log(req.body.name)
-     if(!name || !email || !password){
-        return res.status(400).json({
-            success:false,
-            message:"all fields are required!"
-        })   
-     }
-     if(!validator.isEmail(email)){
-        return res.status(400).json({
-            success:false,
-            message:"Invalid email!"
-        })
-     }
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "all fields are required!",
+      });
+    }
 
-     const exist = await User.findOne({email}).lean();
-     if(exist){
-        return res.status(400).json({
-            success:false,
-            message:"user already exists!"
-        })
-     }
-     const newId = new mongoose.Types.ObjectId();
-     const hasPassword = await bycript.hash(password, 10);
-     const user = new User({
-        _id : newId,
-        name, email, password:hasPassword
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email!",
+      });
+    }
 
-     });
-     await user.save();
-     if(!jwt_Secret) throw new error("jwt_secret token not found!")
-      const token = await jwt.sign({id:newId.toString()}, jwt_Secret, {expiresIn:token_expire_in});
+    const exist = await User.findOne({ email }).lean();
+    if (exist) {
+      return res.status(400).json({
+        success: false,
+        message: "user already exists!",
+      });
+    }
 
-     return res.status(201).json({
-        success:true,
-        message:'account created successfully', token, 
-        user:{id:user._id.toString(), name:user.name, email:user.emal}
-     })
+    const newId = new mongoose.Types.ObjectId();
+    const hashPassword = await bycript.hash(password, 10);
 
- } catch (error) {
-     console.log("register err:", error);
-     return res.status(500).json({
-        success:false,
-        message:"register server err",
-     })
- }
+    const user = new User({
+      _id: newId,
+      name,
+      email,
+      password: hashPassword,
+    });
+
+    await user.save();
+
+    if (!jwt_Secret) throw new Error("jwt_secret token not found!");
+
+    const token = jwt.sign(
+      { id: newId.toString() },
+      jwt_Secret,
+      { expiresIn: token_expire_in }
+    );
+
+    return res.status(201).json({
+      success: true,
+      message: 'account created successfully',
+      token,
+      user: {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.log("register err:", error);
+    return res.status(500).json({
+      success: false,
+      message: "register server err",
+    });
+  }
 }
 
-// login..
-export async function login(req, res){
- try {
-       const {email, password} = req.body;
-    if(!email || !password){
-        return res.status(400).json({
-            success:false,
-            message:"all fields are required!"
-        })
+// login
+export async function login(req, res) {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "all fields are required!",
+      });
     }
-    const user = await User.findOne({email});
+
+    const user = await User.findOne({ email });
+
+    // First check user
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "invalid email or password!",
+      });
+    }
+
     const isMatch = await bycript.compare(password, user.password);
-    if(!user || !isMatch){
-        return res.status(401).json({
-            success:false,
-            message:"invalid email or password!"
-        })
+
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "invalid email or password!",
+      });
     }
 
-     const token = await jwt.sign({id:user._id.toString()}, jwt_Secret, {expiresIn:token_expire_in});
+    if (!jwt_Secret) throw new Error("jwt_secret token not found!");
 
-     return res.status(201).json({
-        success:true,
-        message:'login  successfully', token, 
-        user:{id:user._id.toString(), name:user.name, email:user.emal}
-     })
+    const token = jwt.sign(
+      { id: user._id.toString() },
+      jwt_Secret,
+      { expiresIn: token_expire_in }
+    );
 
- }catch (error) {
-     console.log("login err:", error);
-     return res.status(500).json({
-        success:false,
-        message:"login server err",
-     })
- }
-
+    return res.status(200).json({
+      success: true,
+      message: 'login successfully',
+      token,
+      user: {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.log("login err:", error);
+    return res.status(500).json({
+      success: false,
+      message: "login server err",
+    });
+  }
 }
