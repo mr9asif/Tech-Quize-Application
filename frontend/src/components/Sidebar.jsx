@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Award, BookOpen, ChevronDown, ChevronRight, Code, Coffee, Cpu, Database, Globe, Layout, Sparkles, Star, Target, Terminal, Trophy, X, Zap } from "lucide-react";
+import { Award, BookOpen, CheckCircle, ChevronDown, ChevronRight, Code, Coffee, Cpu, Database, Globe, Layout, Menu, Sparkles, Star, Target, Terminal, Trophy, X, XCircle, Zap } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from 'react-toastify';
 import { sidebarStyles } from "../assets/dummyStyles";
@@ -143,7 +143,7 @@ const Sidebar = () => {
         if(window.innerWidth < 768) setIsSidebarOpen(true);
 
         setTimeout(()=>{
-            const el= asideRef.current?.querySelector(`[data-tech]="${techId}"`);
+            const el= asideRef.current?.querySelector(`[data-tech]="${techId}"]`);
             if(el) el.scrollIntoView({behaviour:"smooth", block:"center"});
         }, 120)
     };
@@ -157,14 +157,20 @@ const Sidebar = () => {
        if(window.innerWidth < 768) setIsSidebarOpen(false);
     };
 
+const getQuestions = ()=>{
+        if(!selectedTech || !selectedLevel) return [];
+        return questionsData[selectedTech]?.[selectedLevel] || [];
+        }
+
     const handleAnswerSelect = (answerIndex) =>{
         const newAnswers={
             ...userAnswer,
             [currentQuestion]:answerIndex
         };
         setUserAnswer(newAnswers);
+          const qs = getQuestions();
         setTimeout(()=>{
-            if(currentQuestion < getQuestons().lenth - 1){
+            if(currentQuestion < qs.length - 1){
                 setCurrentQuestion((prev)=>prev+1);
             }else{
                 setShowResults(true);
@@ -172,16 +178,13 @@ const Sidebar = () => {
         },500)
     };
 
-    const getQuestions = ()=>{
-        if(!selectedTech || !selectedLevel) return [];
-        return questionsData[selectedTech]?.[selectedLevel] || [];
-        }
+    
         // calculate score
         const calculateScore = () =>{
             const questions = getQuestions();
             let correct = 0;
             questions.forEach((question, index)=>{
-                if(userAnswer[index] == questionsData.correctAnswer){
+                if(userAnswer[index] == question.correctAnswer){
                     correct++;
                 }
             });
@@ -233,7 +236,7 @@ const Sidebar = () => {
 
             };
 
-            const perforance = getPerformanceStatus();
+            const performance = getPerformanceStatus();
             const toggleSidebar = ()=> setIsSidebarOpen((prev)=>!prev);
         
             const getAuthHeader = ()=>{
@@ -382,6 +385,316 @@ const Sidebar = () => {
     </div>
   </div>
 </aside>
+{/* Question and answer also result*/}
+<main className={sidebarStyles.mainContent}>
+  <div className={sidebarStyles.mobileHeader}>
+    <button onClick={toggleSidebar} className={sidebarStyles.menuButton}>
+      <Menu size={20} />
+    </button>
+    <div className={sidebarStyles.mobileTitle}>
+      {selectedTech ? (
+        <div className={sidebarStyles.mobileTechInfo}>
+          <div
+            className={`${sidebarStyles.mobileTechIcon} ${
+              technologies.find((t) => t.id === selectedTech).color
+            }`}
+          >
+            {technologies.find((t) => t.id === selectedTech).icon}
+          </div>
+          <div className={sidebarStyles.mobileTechText}>
+            <div className={sidebarStyles.mobileTechName}>
+              {technologies.find((t) => t.id === selectedTech).name}
+            </div>
+            <div className={sidebarStyles.mobileTechLevel}>
+              {selectedLevel
+                ? `${
+                    selectedLevel.charAt(0).toUpperCase() +
+                    selectedLevel.slice(1)
+                  } level`
+                : "Select level"}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className={sidebarStyles.mobilePlaceholder}>
+          Select a technology from the menu
+        </div>
+      )}
+    </div>
+  </div>
+
+  {selectedTech && !selectedLevel && (
+    <div className={sidebarStyles.mobileLevels}>
+      <div className={sidebarStyles.mobileLevelsContainer}>
+        {levels.map((l) => (
+          <button
+            key={l.id}
+            onClick={() => handleLevelSelect(l.id)}
+            className={sidebarStyles.mobileLevelButton}
+          >
+            {l.name}
+          </button>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {!selectedTech ? (
+    <div className={sidebarStyles.welcomeContainer}>
+      <div className={sidebarStyles.welcomeContent}>
+        <div className={sidebarStyles.welcomeIcon}>
+          <Award size={64} className="text-indigo-700" />
+        </div>
+        <h2 className={sidebarStyles.welcomeTitle}>
+          Welcome to Tech Quize Master
+        </h2>
+        <p className={sidebarStyles.welcomeDescription}>
+          Select a technology from the sidebar to start your quize joruney. Test
+          your knowledge at basic, intermediate, or advance levels.
+        </p>
+
+        <div className={sidebarStyles.featuresGrid}>
+          <div className={sidebarStyles.featureCard}>
+            <div className={sidebarStyles.featureIcon}>
+              <Star size={20} />
+            </div>
+            <h3 className={sidebarStyles.featureTitle}>
+              Multiple Technologies
+            </h3>
+            <p className={sidebarStyles.featureDescription}>
+              HTML,CSS,JavaScript, React and more
+            </p>
+          </div>
+
+          <div className={sidebarStyles.featureCard}>
+            <div className={sidebarStyles.featureIcon}>
+              <Zap size={20} />
+            </div>
+
+            <h3 className={sidebarStyles.featureTitle}>
+              Three Difficulty Levels
+            </h3>
+            <p className={sidebarStyles.featureDescription}>
+              Basic, Intermediate and Advanced Challenges
+            </p>
+          </div>
+
+          <div className={sidebarStyles.featureCard}>
+            <div className={sidebarStyles.featureIcon}>
+              <Target size={20} />
+            </div>
+
+            <h3 className={sidebarStyles.featureTitle}>Instant Feedback</h3>
+            <p className={sidebarStyles.featureDescription}>
+              Get detailed results and performance analysis
+            </p>
+          </div>
+        </div>
+        <div className={sidebarStyles.welcomePrompt}>
+          <p className={sidebarStyles.welcomePromptText}>
+            <Sparkles size={16} className="mr-2" />
+            Select any technolog to begin your learning advanture!
+          </p>
+        </div>
+      </div>
+    </div>
+  ) : !selectedLevel ? (
+    <div className={sidebarStyles.levelSelectionContainer}>
+      <div className={sidebarStyles.levelSelectionContent}>
+        <div
+          className={`${sidebarStyles.techSelectionIcon} ${
+            technologies.find((t) => t.id === selectedTech).color
+          }`}
+        >
+          {technologies.find((t) => t.id === selectedTech).icon}
+        </div>
+        <h2 className={sidebarStyles.techSelectionTitle}>
+          {technologies.find((t) => t.id === selectedTech).name} Quize
+        </h2>
+        <p className={sidebarStyles.techSelectionDescription}>
+          Select a difficulty level to begin your challenge
+        </p>
+
+        <div className={sidebarStyles.techSelectionPrompt}>
+          <p className={sidebarStyles.techSelectionPromptText}>
+            Get ready to test your{" "}
+            {technologies.find((t) => t.id === selectedTech).name}{" "}
+            knowledge
+          </p>
+        </div>
+      </div>
+    </div>
+  ) : showResults ? (
+    <div className={sidebarStyles.resultsContainer}>
+      <div className={sidebarStyles.resultsContent}>
+        <div className={sidebarStyles.resultsHeader}>
+          <div
+            className={`${sidebarStyles.performanceIcon} ${performance.color}`}
+          >
+            {performance.icon}
+          </div>
+          <h2 className={sidebarStyles.resultsTitle}>Quize Completed!</h2>
+          <p className={sidebarStyles.resultsSubtitle}>
+            you've completed the {selectedLevel} level
+          </p>
+          <div
+            className={`${sidebarStyles.performanceBadge} ${performance.color}`}
+          >
+            {performance.text}
+          </div>
+
+          <div className={sidebarStyles.scoreGrid}>
+            <div className={sidebarStyles.scoreCard}>
+              <div className={sidebarStyles.scoreIcon}>
+                <CheckCircle size={24} />
+              </div>
+              <p className={sidebarStyles.scoreNumber}>{score.correct}</p>
+              <p className={sidebarStyles.scoreLabel}>Correct Answer</p>
+            </div>
+
+            <div className={sidebarStyles.scoreCard}>
+              <div className={sidebarStyles.scoreIcon}>
+                <XCircle size={24} />
+              </div>
+              <p className={sidebarStyles.scoreNumber}>
+                {score.total - score.correct}
+              </p>
+              <p className={sidebarStyles.scoreLabel}>Incorrect Answers</p>
+            </div>
+          </div>
+
+          <div className={sidebarStyles.scoreProgress}>
+            <div className={sidebarStyles.scoreProgressHeader}>
+              <span className={sidebarStyles.scoreProgressPercentage}>
+                {score.percentage}%
+              </span>
+            </div>
+            <div className={sidebarStyles.scoreProgressBar}>
+              <div
+                className={`${sidebarStyles.scoreProgressFill} ${
+                  score.percentage >= 80
+                    ? "bg-green-400"
+                    : score.percentage >= 60
+                    ? "bg-yellow-400"
+                    : "bg-red-400"
+                }`}
+                style={{ width: `${score.percentage}%` }}
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : currentQ ? (
+    <div className={sidebarStyles.quizContainer}>
+      <div className={sidebarStyles.quizHeader}>
+        <div className={sidebarStyles.quizTitleContainer}>
+          <h1 className={sidebarStyles.quizTitle}>
+            {technologies.find((t) => t.id === selectedTech).name} -{" "}
+            {selectedLevel.charAt(0).toUpperCase() +
+              selectedLevel.slice(1)}{" "}
+            Level
+          </h1>
+          <span className={sidebarStyles.quizCounter}>
+            Question {currentQuestion + 1} of {questions.length}
+          </span>
+        </div>
+
+        <div className={sidebarStyles.progressBar}>
+          <div
+            className={sidebarStyles.progressFill}
+            style={{
+              width: `${
+                ((currentQuestion + 1) / (questions.length || 1)) * 100
+              }%`,
+            }}
+          ></div>
+        </div>
+
+        <div className={sidebarStyles.questionContainer}>
+          <div className={sidebarStyles.questionHeader}>
+            <div className={sidebarStyles.questionIcon}>
+              <Target size={20} />
+            </div>
+            <h2 className={sidebarStyles.questionText}>
+              {currentQ.question}
+            </h2>
+          </div>
+
+          <div className={sidebarStyles.optionsContainer}>
+            {currentQ.options.map((option, index) => {
+              const isSelected = userAnswer[currentQuestion] === index;
+              const isCorrect = index === currentQ.correctAnswer;
+              const showFeedback =
+                userAnswer[currentQuestion] !== undefined;
+
+              return (
+                <button
+                  key={index}
+                  onClick={() => handleAnswerSelect(index)}
+                  disabled={userAnswer[currentQuestion] !== undefined}
+                  className={`${sidebarStyles.optionButton} ${
+                    isSelected
+                      ? isCorrect
+                        ? sidebarStyles.optionCorrect
+                        : sidebarStyles.optionIncorrect
+                      : showFeedback && isCorrect
+                      ? sidebarStyles.optionCorrect
+                      : sidebarStyles.optionNormal
+                  }`}
+                >
+                  <div className={sidebarStyles.optionContent}>
+                    {showFeedback ? (
+                      isSelected ? (
+                        isCorrect ? (
+                          <CheckCircle
+                            size={20}
+                            className={sidebarStyles.optionIconCorrect}
+                          />
+                        ) : (
+                          <XCircle
+                            size={20}
+                            className={sidebarStyles.optionIconIncorrect}
+                          />
+                        )
+                      ) : isCorrect ? (
+                        <CheckCircle
+                          size={20}
+                          className={sidebarStyles.optionIconCorrect}
+                        />
+                      ) : (
+                        <div
+                          className={sidebarStyles.optionIconEmpty}
+                        ></div>
+                      )
+                    ) : (
+                      <div className={sidebarStyles.optionIconEmpty} />
+                    )}
+                    <span className={sidebarStyles.optionText}>
+                      {option}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className={sidebarStyles.loadingContainer}>
+      <div className={sidebarStyles.loadingContent}>
+        <div className={sidebarStyles.loadingSpinner}></div>
+        <h3 className={sidebarStyles.loadingTitle}>
+          Preparing your Quize
+        </h3>
+        <p className={sidebarStyles.loadingDescription}>
+          Loading question...
+        </p>
+      </div>
+    </div>
+  )}
+</main>
 
         </div>
             
