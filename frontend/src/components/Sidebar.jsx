@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Award, BookOpen, Code, Coffee, Cpu, Database, Globe, Layout, Sparkles, Star, Target, Terminal, Trophy, Zap } from "lucide-react";
+import { Award, BookOpen, ChevronDown, ChevronRight, Code, Coffee, Cpu, Database, Globe, Layout, Sparkles, Star, Target, Terminal, Trophy, X, Zap } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from 'react-toastify';
 import { sidebarStyles } from "../assets/dummyStyles";
@@ -304,9 +304,83 @@ const Sidebar = () => {
         <div className={sidebarStyles.logoIcon}>
            <BookOpen size={28} className="text-indigo-700" />
         </div>
+        <div>
+          <h1 className={sidebarStyles.logoTitle}>Tech Quize Master</h1>
+          <p className={sidebarStyles.logoSubtitle}>Test your knowledge & improve skills</p>
+        </div>
      </div>
+      <button onClick={toggleSidebar} className={sidebarStyles.closeButton}> <X size={20}/></button>
    </div>
  </div>
+  <div className={sidebarStyles.sidebarContent}>
+    <div className={sidebarStyles.technologiesHeader}>
+     <h2 className={sidebarStyles.technologiesTitle}>Technologies</h2>
+     <span className={sidebarStyles.technologiesCount}>{technologies.length} options</span>
+    </div>
+     {technologies.map((tech)=>(
+        <div key={tech.id} className={sidebarStyles.techItem} data-tech={tech.id}>
+        <button
+  onClick={() => handleTechSelect(tech.id)}
+  className={`${sidebarStyles.techButton} ${
+    selectedTech === tech.id
+      ? `${tech.color} ${sidebarStyles.techButtonSelected}`
+      : sidebarStyles.techButtonNormal
+  }`}
+>
+ <div className={sidebarStyles.techButtonContent}>
+  <span className={`{sidebarStyles.techIcon} ${tech.color}`}>
+   {tech.icon}
+  </span>
+  <span className={sidebarStyles.techName}>{tech.name}</span> 
+ </div>
+ {selectedTech === tech.id ? (
+    <ChevronDown size={18} className="text-current" />
+ ): (
+    <ChevronRight size={18} className='text-gray-400' />
+ )}
+</button>
+{selectedTech === tech.id && (
+    <div className={sidebarStyles.levelsContainer}>
+      <h3 className={sidebarStyles.levelsTitle}>
+        <span>Select Difficulty</span>
+        <span className={sidebarStyles.techBadge}>
+         {technologies.find((t)=>t.id === selectedTech).name}
+        </span>
+      </h3>
+      {levels.map((level)=>(
+      <button
+  key={level.id}
+  onClick={() => handleLevelSelect(level.id)}
+  className={`${sidebarStyles.levelButton} ${
+    selectedLevel === level.id
+      ? `${level.color} ${sidebarStyles.levelButtonSelected}`
+      : sidebarStyles.levelButtonNormal
+  }`}
+>
+<div className={sidebarStyles.levelButtonContent}>
+  <span className={`${sidebarStyles.levelIcon} ${selectedLevel === level.id ? 'bg-white/40' : 'bg-gray-100'}`}>{level.icon}</span>
+  <span>{level.name}</span>
+</div>
+<span className={sidebarStyles.levelQuestions}>
+ {level.questions} Qs
+</span>
+</button>
+
+      ))}
+    </div>
+)}
+        </div>
+     ))}
+  </div>
+
+  <div className={sidebarStyles.sidebarFooter}>
+    <div className={sidebarStyles.footerContent}>
+      <div className={sidebarStyles.footerContentCenter}>
+        <p>Master your skills one quize at a time</p>
+        <p className={sidebarStyles.footerHighlight}>Keep Learning, Keep Growing!</p>
+      </div>
+    </div>
+  </div>
 </aside>
 
         </div>
