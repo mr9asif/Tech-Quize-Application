@@ -695,8 +695,8 @@ const getQuestions = ()=>{
     </div>
   )}
 </main>
-
-        </div>
+ </div>
+     <style>{sidebarStyles.customStyles}</style>
             
         </div>
     );
