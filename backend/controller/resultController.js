@@ -9,26 +9,45 @@ export async function createResult(req, res) {
       });
     }
 
-    const {
-      title,
-      technology,
-      level,
-      totalQuestions, // use plural to match frontend
-      correct,
-      wrong,
-    } = req.body;
+    const { title, technology, level, totalQuestions, correct, wrong } = req.body;
 
-    if (
-      !technology ||
-      !level ||
-      totalQuestions === undefined ||
-      correct === undefined
-    ) {
+    // Required fields check
+    if (!technology || !level || totalQuestions === undefined || correct === undefined) {
       return res.status(400).json({
         success: false,
         message: "Missing fields",
       });
     }
+
+    // ---- ❗ ADD VALIDATION CHECKS ----
+    if (isNaN(totalQuestions) || totalQuestions <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "totalQuestions must be a positive number",
+      });
+    }
+
+    if (isNaN(correct) || correct < 0) {
+      return res.status(400).json({
+        success: false,
+        message: "correct must be a non-negative number",
+      });
+    }
+
+    if (correct > totalQuestions) {
+      return res.status(400).json({
+        success: false,
+        message: "correct cannot be greater than totalQuestions",
+      });
+    }
+
+    if (wrong !== undefined && (isNaN(wrong) || wrong < 0)) {
+      return res.status(400).json({
+        success: false,
+        message: "wrong must be a non-negative number",
+      });
+    }
+    // ---- END VALIDATION ----
 
     const computedWrong =
       wrong !== undefined
@@ -53,6 +72,7 @@ export async function createResult(req, res) {
     };
 
     const created = await Result.create(payload);
+
     return res.status(201).json({
       success: true,
       message: "Result created",
@@ -66,6 +86,7 @@ export async function createResult(req, res) {
     });
   }
 }
+
 
 export async function listResult(req, res) {
   try {

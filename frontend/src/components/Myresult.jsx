@@ -158,6 +158,34 @@ const Myresult = ({apiBase="http://localhost:4000"}) => {
                        
                     </div>
                  </header>
+                 <div className={resultStyles.filterContainer}>
+                   <div className={resultStyles.filterContent}>
+                     <div className={resultStyles.filterButton}>
+                        <span className={resultStyles.filterLabel}>Filter by tech:</span>
+                        <button onClick={()=>handleSelectTech('all')} className={`${resultStyles.filterButton} ${selectedTechnology === 'all' ? resultStyles.filterButtonActive : resultStyles.filterButtonInactive}`} >All</button>
+ {technologies.length === 0 && (
+        <span className="text-sm text-gray-500 ml-2">
+          {/* helps debug visually */}
+          No technologies found
+        </span>
+      )}
+
+                        {/**dynamic technology buttons */}
+                        {technologies.map((tech)=>(
+                            <button 
+                             key={tech}
+                             onClick={()=> handleSelectTech(tech)}
+                             className={`${resultStyles.filterButton} ${selectedTechnology === tech 
+                                ? resultStyles.filterButtonActive 
+                                : resultStyles.filterButtonInactive
+                                }`}
+                            >
+                            {tech}
+                            </button>
+                        ))}
+                     </div>
+                   </div>
+                 </div>
              </div>
         </div>
     );
