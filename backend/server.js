@@ -32,6 +32,10 @@ app.use('/api/results', resultRouter);
 
 app.use("/api/profile", profileRoutes);
 
+app.use('/', (req, res)=>{
+    res.send("server running")
+})
+
 
 app.listen(port, ()=>{
     console.log(`Server started on http://localhost:${port}`);
