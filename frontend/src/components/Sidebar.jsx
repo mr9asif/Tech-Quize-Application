@@ -7,12 +7,13 @@ import questionsData from "../assets/dummydata.js";
 const API_BASE = "http://localhost:4000";
 
 const Sidebar = () => {
+  
     const [selectedTech, setSelectedTech] = useState(null);
     const [selectedLevel, setSelectedLevel] = useState(null);
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [userAnswer, setUserAnswer] = useState({});
     const [showResults, setShowResults] = useState(false);
-
+ console.log(userAnswer);
     const submittedRef = useRef(false);
     const [isSidebarOpen, setIsSidebarOpen]=useState(false);
     const asideRef = useRef(null);

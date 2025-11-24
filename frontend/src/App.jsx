@@ -2,8 +2,8 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Login from "./components/Login";
 import Home from './pages/Home'; // adjust 
 // path as needed
-import Myresult from "./components/Myresult";
 import Signup from "./components/Signup";
+import Myresultpage from "./pages/Myresultpage";
 
 // protected route
 function RequiredAuth({children}){
@@ -26,7 +26,7 @@ const App = () => {
       <Route path="/signup" element={<Signup/>} />
       <Route path="/result" element={
         <RequiredAuth>
-         <Myresult></Myresult>
+        <Myresultpage></Myresultpage>
         </RequiredAuth>
       } />
     </Routes>
