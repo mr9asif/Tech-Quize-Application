@@ -6,9 +6,13 @@ import profileRoutes from './routes/profileRoutes.js';
 import resultRouter from './routes/resultRoutes.js';
 import userRoute from './routes/userRouter.js';
 
+import dotenv from "dotenv";
+dotenv.config();
+
 const app = express();
 const port = 4000;
 
+console.log("ENV CHECK:", process.env.MONGO_URL);
 // midleware...
 app.use(cors());
 app.use(express.json());
