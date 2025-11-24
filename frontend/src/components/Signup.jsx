@@ -6,7 +6,7 @@ import { signupStyles } from "../assets/dummyStyles";
 const isValidEmail = (email) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-const API_BASE = "http://localhost:4000";
+const API_BASE = "https://tech-quize-application.vercel.app";
 
 const Signup = ({ onSignupSuccess = null }) => {
   const navigate = useNavigate();

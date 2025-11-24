@@ -1,10 +1,10 @@
 import {
-  ArrowLeft,
-  Eye,
-  EyeOff,
-  Lock,
-  LogIn,
-  Mail,
+    ArrowLeft,
+    Eye,
+    EyeOff,
+    Lock,
+    LogIn,
+    Mail,
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -24,7 +24,7 @@ const Login = ({ onLoginSuccess = null }) => {
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  const API_BASE = 'http://localhost:4000';
+  const API_BASE = 'https://tech-quize-application.vercel.app';
 
   // ✅ Validation
   const validate = () => {

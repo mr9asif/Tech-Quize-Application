@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from 'react-toastify';
 import { sidebarStyles } from "../assets/dummyStyles";
 import questionsData from "../assets/dummydata.js";
-const API_BASE = "http://localhost:4000";
+const API_BASE = "https://tech-quize-application.vercel.app";
 
 const Sidebar = () => {
   

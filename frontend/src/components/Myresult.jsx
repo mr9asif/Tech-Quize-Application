@@ -16,7 +16,7 @@ const Badge = ({ percent }) => {
   );
 };
 
-const Myresult = ({ apiBase = "http://localhost:4000" }) => {
+const Myresult = ({ apiBase = "https://tech-quize-application.vercel.app" }) => {
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
