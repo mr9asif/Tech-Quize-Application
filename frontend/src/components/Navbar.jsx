@@ -132,6 +132,10 @@ const Navbar = () => {
                     <Award className={navbarStyles.mobileMenuIcon} />
                     My result
                   </NavLink>
+                    <NavLink to="/profile" className={navbarStyles.mobileMenuItem}>
+      <PanelsTopLeft className={navbarStyles.mobileMenuIcon} />
+      Profile
+    </NavLink>
                 </li>
                 {loggedIn ? (
                   <li>
