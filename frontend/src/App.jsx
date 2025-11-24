@@ -4,6 +4,7 @@ import Home from './pages/Home'; // adjust
 // path as needed
 import Signup from "./components/Signup";
 import Myresultpage from "./pages/Myresultpage";
+import ProfilePage from "./pages/ProfilePage";
 
 // protected route
 function RequiredAuth({children}){
@@ -29,6 +30,14 @@ const App = () => {
         <Myresultpage></Myresultpage>
         </RequiredAuth>
       } />
+      <Route
+  path="/profile"
+  element={
+    <RequiredAuth>
+      <ProfilePage />
+    </RequiredAuth>
+  }
+/>
     </Routes>
   );
 };

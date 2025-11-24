@@ -2,6 +2,7 @@ import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import { connectDB } from './config/db.js';
+import profileRoutes from './routes/profileRoutes.js';
 import resultRouter from './routes/resultRoutes.js';
 import userRoute from './routes/userRouter.js';
 
@@ -24,6 +25,8 @@ app.get('/', (req, res)=>{
 app.use('/api/auth', userRoute)
 // result routee
 app.use('/api/results', resultRouter);
+
+app.use("/api/profile", profileRoutes);
 
 
 app.listen(port, ()=>{

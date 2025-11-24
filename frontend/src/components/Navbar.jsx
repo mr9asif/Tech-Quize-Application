@@ -1,4 +1,4 @@
-import { Award, LogIn, LogOut, Menu, X } from "lucide-react";
+import { Award, LogIn, LogOut, Menu, PanelsTopLeft, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { navbarStyles } from "../assets/dummyStyles";
@@ -78,10 +78,20 @@ const Navbar = () => {
         <div className={navbarStyles.desktopButtonsContainer}>
           <div className={navbarStyles.spacer}></div>
 
-          <NavLink to="/result" className={navbarStyles.resultsButton}>
-            <Award className={navbarStyles.buttonIcon} />
-            My Result
-          </NavLink>
+       {loggedIn && (
+  <>
+    <NavLink to="/result" className={navbarStyles.resultsButton}>
+      <Award className={navbarStyles.buttonIcon} />
+      My Result
+    </NavLink>
+
+    <NavLink to="/profile" className={navbarStyles.resultsButton}>
+      <PanelsTopLeft className={navbarStyles.buttonIcon} />
+      Profile
+    </NavLink>
+  </>
+)}
+
 
           {loggedIn ? (
             <button
