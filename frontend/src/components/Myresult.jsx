@@ -163,12 +163,7 @@ const Myresult = ({apiBase="http://localhost:4000"}) => {
                      <div className={resultStyles.filterButton}>
                         <span className={resultStyles.filterLabel}>Filter by tech:</span>
                         <button onClick={()=>handleSelectTech('all')} className={`${resultStyles.filterButton} ${selectedTechnology === 'all' ? resultStyles.filterButtonActive : resultStyles.filterButtonInactive}`} >All</button>
- {technologies.length === 0 && (
-        <span className="text-sm text-gray-500 ml-2">
-          {/* helps debug visually */}
-          No technologies found
-        </span>
-      )}
+
 
                         {/**dynamic technology buttons */}
                         {technologies.map((tech)=>(
@@ -183,6 +178,30 @@ const Myresult = ({apiBase="http://localhost:4000"}) => {
                             {tech}
                             </button>
                         ))}
+
+                        {/** if we don't yet have technologies but result exist, drive from current results */}
+                        {technologies.length === 0 &&
+                            Array.isArray(results) &&
+                            results.length > 0 &&
+                            [
+                                ...new Set(results.map((r)=>r.technology).filter(Boolean)),
+                            ].map((tech)=>(
+                                <Button
+                                key={`fallback-${tech}`}
+                                onClick={()=> handleSelectTech(tech)}
+                                className={`${resultStyles.filterButton} ${
+                                    selectedTechnology === tech
+                                    ? resultStyles.filterButtonActive :
+                                    resultStyles.filterButtonInactive
+                                    }`}
+                                    aria-presed = {selectedTechnology === tech}
+                                >{tech}</Button>
+                            ))}
+                     </div>
+                     <div className={resultStyles.filterStatus}>
+                     {selectedTechnology === 'all' ? 
+                        'Showing all technologis' : `Filtering: ${selectedTechnology}`
+                     }
                      </div>
                    </div>
                  </div>
