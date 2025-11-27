@@ -14,6 +14,7 @@ const Navbar = () => {
       const u = localStorage.getItem("authToken");
       setLoggedIn(!!u);
     } catch (error) {
+      console.error(error);
       setLoggedIn(false);
     }
 
@@ -31,6 +32,7 @@ const Navbar = () => {
       localStorage.removeItem("authToken");
       localStorage.removeItem("currentUser");
     } catch (error) {
+      console.error(error);
       // ignore
     }
 
@@ -42,6 +44,7 @@ const Navbar = () => {
     try {
       navigate("/login");
     } catch (error) {
+      console.error(error);
       window.location.href = "/login";
     }
   };
@@ -60,7 +63,7 @@ const Navbar = () => {
       <div className={navbarStyles.container}>
         <div className={navbarStyles.logoContainer}>
           <Link to="/" className={navbarStyles.logoButton}>
-            <div className={navbarStyles.logoInner}></div>
+            {/* <div className={navbarStyles.logoInner}></div> */}
             <img
               src={techQuizeLogo}
               alt=""
@@ -78,20 +81,19 @@ const Navbar = () => {
         <div className={navbarStyles.desktopButtonsContainer}>
           <div className={navbarStyles.spacer}></div>
 
-       {loggedIn && (
-  <>
-    <NavLink to="/result" className={navbarStyles.resultsButton}>
-      <Award className={navbarStyles.buttonIcon} />
-      My Result
-    </NavLink>
+          {loggedIn && (
+            <>
+              <NavLink to="/result" className={navbarStyles.resultsButton}>
+                <Award className={navbarStyles.buttonIcon} />
+                My Result
+              </NavLink>
 
-    <NavLink to="/profile" className={navbarStyles.resultsButton}>
-      <PanelsTopLeft className={navbarStyles.buttonIcon} />
-      Profile
-    </NavLink>
-  </>
-)}
-
+              <NavLink to="/profile" className={navbarStyles.resultsButton}>
+                <PanelsTopLeft className={navbarStyles.buttonIcon} />
+                Profile
+              </NavLink>
+            </>
+          )}
 
           {loggedIn ? (
             <button
@@ -132,10 +134,13 @@ const Navbar = () => {
                     <Award className={navbarStyles.mobileMenuIcon} />
                     My result
                   </NavLink>
-                    <NavLink to="/profile" className={navbarStyles.mobileMenuItem}>
-      <PanelsTopLeft className={navbarStyles.mobileMenuIcon} />
-      Profile
-    </NavLink>
+                  <NavLink
+                    to="/profile"
+                    className={navbarStyles.mobileMenuItem}
+                  >
+                    <PanelsTopLeft className={navbarStyles.mobileMenuIcon} />
+                    Profile
+                  </NavLink>
                 </li>
                 {loggedIn ? (
                   <li>
