@@ -2,7 +2,7 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 
-const ProfilePage = ({ apiBase = "http://localhost:4000" }) => {
+const ProfilePage = ({ apiBase = "https://tech-quize-application.vercel.app" }) => {
   const [summary, setSummary] = useState(null);
   const [byTech, setByTech] = useState([]);
   const [loading, setLoading] = useState(true);
