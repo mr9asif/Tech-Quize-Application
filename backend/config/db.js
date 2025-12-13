@@ -7,16 +7,18 @@ if (!cached) {
 }
 
 export const connectDB = async () => {
-  if (cached.conn) {
-    return cached.conn;
-  }
+  if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
     cached.promise = mongoose
       .connect(process.env.MONGO_URL, {
         bufferCommands: false,
       })
-      .then((mongoose) => mongoose);
+      .then((mongoose) => mongoose)
+      .catch((err) => {
+        cached.promise = null; // reset so next try can retry
+        throw err; // 🔴 VERY IMPORTANT
+      });
   }
 
   cached.conn = await cached.promise;

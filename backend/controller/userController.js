@@ -77,6 +77,7 @@ export async function register(req, res) {
 // login
 export async function login(req, res) {
   try {
+     await connectDB(); // MUST succeed or throw
     const { email, password } = req.body;
 
     if (!email || !password) {
