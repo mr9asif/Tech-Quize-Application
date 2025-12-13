@@ -1,15 +1,19 @@
-import bycript from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
-import validator from 'validator';
+import validator from "validator";
+import { connectDB } from "../config/db.js";
 import User from "../models/userModel.js";
 
-const token_expire_in = '24h';
-const jwt_Secret = 'your jwt token';
+const token_expire_in = "24h";
+const jwt_Secret = process.env.JWT_SECRET;
+
 
 // register
 export async function register(req, res) {
   try {
+    await connectDB();
+
     const { name, email, password } = req.body;
     console.log(req.body.name);
 
@@ -36,7 +40,7 @@ export async function register(req, res) {
     }
 
     const newId = new mongoose.Types.ObjectId();
-    const hashPassword = await bycript.hash(password, 10);
+    const hashPassword = await bcrypt.hash(password, 10);
 
     const user = new User({
       _id: newId,
@@ -97,7 +101,8 @@ export async function login(req, res) {
       });
     }
 
-    const isMatch = await bycript.compare(password, user.password);
+ const isMatch = await bcrypt.compare(password, user.password);
+
 
     if (!isMatch) {
       return res.status(401).json({
