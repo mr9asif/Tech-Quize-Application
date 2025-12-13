@@ -76,29 +76,21 @@ const ProfilePage = ({ apiBase = "https://tech-quize-application.vercel.app" }) 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               <div className="bg-white shadow rounded-xl p-4">
                 <p className="text-sm text-gray-500">Quizzes Taken</p>
-                <p className="text-2xl font-semibold">
-                  {summary.totalQuizzes}
-                </p>
+                <p className="text-2xl font-semibold">{summary.totalQuizzes}</p>
               </div>
               <div className="bg-white shadow rounded-xl p-4">
-                <p className="text-sm text-gray-500">
-                  Questions Attempted
-                </p>
+                <p className="text-sm text-gray-500">Questions Attempted</p>
                 <p className="text-2xl font-semibold">
                   {summary.totalQuestions}
                 </p>
               </div>
               <div className="bg-white shadow rounded-xl p-4">
                 <p className="text-sm text-gray-500">Correct Answers</p>
-                <p className="text-2xl font-semibold">
-                  {summary.totalCorrect}
-                </p>
+                <p className="text-2xl font-semibold">{summary.totalCorrect}</p>
               </div>
               <div className="bg-white shadow rounded-xl p-4">
                 <p className="text-sm text-gray-500">Accuracy</p>
-                <p className="text-2xl font-semibold">
-                  {summary.accuracy}%
-                </p>
+                <p className="text-2xl font-semibold">{summary.accuracy}%</p>
               </div>
             </div>
 
