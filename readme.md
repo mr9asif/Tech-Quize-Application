@@ -5,7 +5,7 @@ Tech Quiz Master is a fun and fast platform for taking tech-related quizzes. It 
 
 
 ## 🌐 Live Link
-**[Click here to visit the app](https://your-live-link.com)**
+**[Click here to visit the app](https://tech-quize-app.netlify.app)**
 
 ---
 
