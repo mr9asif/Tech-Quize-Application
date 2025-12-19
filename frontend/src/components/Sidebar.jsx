@@ -140,7 +140,7 @@ const Sidebar = () => {
       color: "bg-green-50 text-green-600",
     },
     {
-      id: "advance",
+      id: "advanced",
       name: "Advance",
       questions: 60,
       icon: <Target size={16} />,

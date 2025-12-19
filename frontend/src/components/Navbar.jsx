@@ -1,4 +1,4 @@
-import { Award, LogIn, LogOut, Menu, PanelsTopLeft, X } from "lucide-react";
+import { Award, GitBranchIcon, LogIn, LogOut, Menu, PanelsTopLeft, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { navbarStyles } from "../assets/dummyStyles";
@@ -83,6 +83,9 @@ const Navbar = () => {
 
           {loggedIn && (
             <>
+             <NavLink to="/contributor" className={navbarStyles.resultsButton}>
+             <GitBranchIcon className={navbarStyles.buttonIcon}/>
+             Contributor</NavLink>
               <NavLink to="/result" className={navbarStyles.resultsButton}>
                 <Award className={navbarStyles.buttonIcon} />
                 My Result
@@ -92,6 +95,7 @@ const Navbar = () => {
                 <PanelsTopLeft className={navbarStyles.buttonIcon} />
                 Profile
               </NavLink>
+
             </>
           )}
 
@@ -126,6 +130,13 @@ const Navbar = () => {
             <div className={navbarStyles.mobileMenuPanel}>
               <ul className={navbarStyles.mobileMenuList}>
                 <li>
+                 <NavLink
+                  to="/contributor"
+                  className={navbarStyles.mobileMenuItem}
+                  onClick={()=>setMenuOpen(false)}
+                 >
+                 <GitBranchIcon className={navbarStyles.mobileMenuIcon}/>
+                 Contributor</NavLink>
                   <NavLink
                     to="/result"
                     className={navbarStyles.mobileMenuItem}
