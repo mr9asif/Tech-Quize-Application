@@ -80,12 +80,12 @@ const Navbar = () => {
 
         <div className={navbarStyles.desktopButtonsContainer}>
           <div className={navbarStyles.spacer}></div>
-
-          {loggedIn && (
-            <>
-             <NavLink to="/contributor" className={navbarStyles.resultsButton}>
+              <NavLink to="/contributor" className={navbarStyles.resultsButton}>
              <GitBranchIcon className={navbarStyles.buttonIcon}/>
              Contributor</NavLink>
+          {loggedIn && (
+            <>
+            
               <NavLink to="/result" className={navbarStyles.resultsButton}>
                 <Award className={navbarStyles.buttonIcon} />
                 My Result
@@ -125,60 +125,75 @@ const Navbar = () => {
               <Menu className={navbarStyles.menuIcon} />
             )}
           </button>
+{menuOpen && (
+  <div className={navbarStyles.mobileMenuPanel}>
+    <ul className={navbarStyles.mobileMenuList}>
+      
+      {/* ALWAYS VISIBLE: Contributor */}
+      <li>
+        <NavLink
+          to="/contributor"
+          className={navbarStyles.mobileMenuItem}
+          onClick={() => setMenuOpen(false)}
+        >
+          <GitBranchIcon className={navbarStyles.mobileMenuIcon} />
+          Contributor
+        </NavLink>
+      </li>
 
-          {menuOpen && (
-            <div className={navbarStyles.mobileMenuPanel}>
-              <ul className={navbarStyles.mobileMenuList}>
-                <li>
-                 <NavLink
-                  to="/contributor"
-                  className={navbarStyles.mobileMenuItem}
-                  onClick={()=>setMenuOpen(false)}
-                 >
-                 <GitBranchIcon className={navbarStyles.mobileMenuIcon}/>
-                 Contributor</NavLink>
-                  <NavLink
-                    to="/result"
-                    className={navbarStyles.mobileMenuItem}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    <Award className={navbarStyles.mobileMenuIcon} />
-                    My result
-                  </NavLink>
-                  <NavLink
-                    to="/profile"
-                    className={navbarStyles.mobileMenuItem}
-                  >
-                    <PanelsTopLeft className={navbarStyles.mobileMenuIcon} />
-                    Profile
-                  </NavLink>
-                </li>
-                {loggedIn ? (
-                  <li>
-                    <button
-                      type="button"
-                      onClick={handleLogout}
-                      className={navbarStyles.mobileMenuItem}
-                    >
-                      <LogOut className={navbarStyles.mobileMenuIcon} />
-                      Logout
-                    </button>
-                  </li>
-                ) : (
-                  <li>
-                    <NavLink
-                      to="/login"
-                      className={navbarStyles.mobileMenuItem}
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      <LogIn className={navbarStyles.mobileMenuIcon} />
-                      Login
-                    </NavLink>
-                  </li>
-                )}
-              </ul>
-            </div>
-          )}
+      {/* ONLY VISIBLE IF LOGGED IN: Result & Profile */}
+      {loggedIn && (
+        <>
+          <li>
+            <NavLink
+              to="/result"
+              className={navbarStyles.mobileMenuItem}
+              onClick={() => setMenuOpen(false)}
+            >
+              <Award className={navbarStyles.mobileMenuIcon} />
+              My result
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/profile"
+              className={navbarStyles.mobileMenuItem}
+              onClick={() => setMenuOpen(false)}
+            >
+              <PanelsTopLeft className={navbarStyles.mobileMenuIcon} />
+              Profile
+            </NavLink>
+          </li>
+        </>
+      )}
+
+      {/* TOGGLE VISIBILITY: Logout vs Login */}
+      {loggedIn ? (
+        <li>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className={navbarStyles.mobileMenuItem}
+          >
+            <LogOut className={navbarStyles.mobileMenuIcon} />
+            Logout
+          </button>
+        </li>
+      ) : (
+        <li>
+          <NavLink
+            to="/login"
+            className={navbarStyles.mobileMenuItem}
+            onClick={() => setMenuOpen(false)}
+          >
+            <LogIn className={navbarStyles.mobileMenuIcon} />
+            Login
+          </NavLink>
+        </li>
+      )}
+    </ul>
+  </div>
+)}
         </div>
       </div>
 
