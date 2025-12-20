@@ -48,6 +48,3 @@ Tech Quiz Master is a fun and fast platform for taking tech-related quizzes. It 
    npm run dev   
 
 
-
-
-**Would you like me to show you how to add some "GitHub Badges" (those small colorful buttons for React, Node, etc.) to the top of this README?**
